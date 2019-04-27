@@ -18,12 +18,21 @@ services:
     volumes:
       - redis:/data
 
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.nginx
+      context: ./nginx
+    ports:
+      - '80:80'
+      - '8080:80'
+    depends_on:
+      - app
+
   app:
     image: lokideos/think_devops:v1.0.3
     environment:
       - DB_HOST=postgres
-    ports:
-      - "80:3000"
     depends_on:
       - postgres
       - redis
