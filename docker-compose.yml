@@ -1,0 +1,32 @@
+version: '2'
+services:
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=sample_rails_app_development
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5431:5432
+
+  redis:
+    image: redis
+    ports:
+      - 6378:6379
+    volumes:
+      - redis:/data
+
+  app:
+    image: mexx/sample_rails_app:v.2.0.0
+    environment:
+      - DB_HOST=postgres
+    ports:
+      - "80:3000"
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres:
+  redis:
