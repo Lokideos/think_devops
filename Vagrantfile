@@ -8,24 +8,11 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "control", primary: true do |h|
     h.vm.network "private_network", ip: "192.168.135.10"
-    h.vm.provision :shell, :inline => <<'EOF'
-if [ ! -f "/home/vagrant/.ssh/id_rsa" ]; then
-  ssh-keygen -t rsa -N "" -f /home/vagrant/.ssh/id_rsa
-fi
-cp /home/vagrant/.ssh/id_rsa.pub /vagrant/control.pub
-
-cat << 'SSHEOF' > /home/vagrant/.ssh/config
-Host *
-  StrictHostKeyChecking no
-  UserKnownHostsFile=/dev/null
-SSHEOF
-
-chown -R vagrant:vagrant /home/vagrant/.ssh/
-EOF
+    h.vm.provision :shell, path: "create_ssh_key.sh"
   end
 
   config.vm.define "host01" do |h|
     h.vm.network "private_network", ip: "192.168.135.101"
-    h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, path: "add_ssh_key.sh"
   end
 end
