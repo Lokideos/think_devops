@@ -59,7 +59,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: think_devops_development_test
+  database: think_devops_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -82,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: think_devops_development_production
-  username: think_devops_development
+  database: think_devops_production
+  username: think_devops
   password: <%= ENV['SAMPLE_RAILS_APP_DATABASE_PASSWORD'] %>
