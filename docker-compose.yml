@@ -2,8 +2,9 @@ version: '2'
 services:
   postgres:
     environment:
+      - POSTGRES_USER=think_devops
       - POSTGRES_PASSWORD=
-      - POSTGRES_DB=sample_rails_app_development
+      - POSTGRES_DB=think_devops_production
     image: postgres
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -18,7 +19,7 @@ services:
       - redis:/data
 
   app:
-    image: mexx/sample_rails_app:v.2.0.0
+    image: lokideos/think_devops:v1.0.3
     environment:
       - DB_HOST=postgres
     ports:
