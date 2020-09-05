@@ -1,0 +1,42 @@
+version: '2'
+services:
+  postgres:
+    environment:
+      - POSTGRES_USER=think_devops
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=think_devops_production
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5431:5432
+
+  redis:
+    image: redis
+    ports:
+      - 6378:6379
+    volumes:
+      - redis:/data
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.nginx
+      context: ./nginx
+    ports:
+      - '80:80'
+      - '8080:80'
+    depends_on:
+      - app
+
+  app:
+    image: lokideos/think_devops:v1.0.3
+    environment:
+      - DB_HOST=postgres
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres:
+  redis:
